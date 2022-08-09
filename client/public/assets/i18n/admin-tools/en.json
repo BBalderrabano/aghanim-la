@@ -1,0 +1,19 @@
+{
+    "laclasses": {
+        "deleteconfirmessage": "Are you sure you want to delete this class?",
+        "classname": "Class Name",
+        "parentclass": "Parent Class",
+        "enabled": "Enabled",
+        "addnewclass": "Add new class"
+    },
+    "users": {
+        "addnewuser": "Preaprove User",
+        "username": "Username",
+        "enabled": "Enabled",
+        "pendingusers": "Pending Users",
+        "enterkeyinfo": "Use the Enter key to save and stay",
+        "approve": "Approve",
+        "deny": "Deny",
+        "deleteconfirmessage": "Are you sure you want to delete this user?"
+    }
+}

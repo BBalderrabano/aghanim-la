@@ -1,0 +1,10 @@
+.tab-content{
+    width: 100%;
+}
+
+.navbar{
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+    height: 56px;
+}

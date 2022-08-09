@@ -1,0 +1,8 @@
+{
+    "usernameinput": "Lost Ark Main Name",
+    "passwordinput": "Password",
+    "passwordtooshort": "At least 6 characters",
+    "confirmpassword": "Confirm Password",
+    "matchingpassword": "Password matches",
+    "non-matchingpassword": "Password does not match"
+}

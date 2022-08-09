@@ -1,0 +1,34 @@
+.table-title {
+  padding-bottom: 15px;
+  background: #435d7d;
+  color: #fff;
+  padding: 16px 30px;
+  min-width: 100%;
+  border-radius: 3px 3px 0 0;
+}
+
+.table-title .btn span {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.table-wrapper {
+  overflow: auto;
+  height: 100%;
+}
+
+.table {
+  margin-top: 10px;
+}
+
+.table td {
+  word-break: break-word;
+}
+
+.table th {
+  word-break: break-word;
+}
+
+.react-bootstrap-table-pagination{
+  margin: 0px;
+}
