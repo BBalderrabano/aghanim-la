@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import useAuth from '../hooks/useAuth';
 
-import ClassesSelector from "../components/ClassesSelector";
+import ClassesSelector from "../components/inputs/ClassesSelector";
 
 import {
   TextField,
@@ -26,12 +26,12 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { register, login } from "../api/user";
 
 const SignUp = () => {
-  const {t} = useTranslation("common", "login");
-  
+  const { t } = useTranslation("common", "login");
+
   const { setAuth } = useAuth();
 
   const [laNick, setLANick] = useState("");
-  const [ilvl, setILevel] = useState(null);
+  const [itemlevel, setItemLevel] = useState("");
   const [laclass, setLAClass] = useState(null);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -49,27 +49,27 @@ const SignUp = () => {
     setIsLoading(true);
 
     try {
-      const res = await register({ username: laNick, password, laclass });
+      const res = await register({ username: laNick, password, laclass, itemlevel });
       if (res.error) {
         toast.error(res.error);
       } else {
         toast.success(res.message);
-           
-        if(res.preaproved){
+
+        if (res.preaproved) {
 
           try {
             const res = await login({ username: laNick, password });
             if (res.error) toast.error(res.error);
             else {
               setAuth({ user: res.username, roles: res.roles });
-      
+
               navigation("/", { replace: true });
             }
           } catch (e) {
             toast.error(e);
           }
 
-        }else{
+        } else {
           navigation("/login", { replace: true });
         }
       }
@@ -88,6 +88,12 @@ const SignUp = () => {
     }
   }
 
+  const checkIfNaN = (e) => {
+    const no_digits = e.target.value.replace(/\D/g, '');
+
+    setItemLevel(no_digits);
+  }
+
   return (
     <div className="container mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-5">
       <div className="text-center mb-5 alert alert-primary">
@@ -98,7 +104,7 @@ const SignUp = () => {
         <TextField
           id="lost-ark-name"
           size="small"
-          label={t('usernameinput', {ns:'login'})}
+          label={t('usernameinput', { ns: 'login' })}
           variant="outlined"
           className="form-control w70"
           value={laNick}
@@ -106,27 +112,36 @@ const SignUp = () => {
           onKeyDown={(e) => checkForValidUsername(e)}
         />
         <TextField
-            id="lost-ark-ilevel"
-            size="small"
-            label={t('ilvl')}
-            type="number"
-            variant="outlined"
-            className="form-control w30"
-            value={ilvl}
-            onChange={(e) => !isNaN(e.target.value) ? setILevel(parseInt(e.target.value)) : setILevel(null) }  
-          />
+          id="lost-ark-ilevel"
+          size="small"
+          label={t('ilvl')}
+          type="number"
+          variant="outlined"
+          className="form-control w30"
+          value={itemlevel}
+          onChange={(e) => checkIfNaN(e)}
+        />
       </div>
 
+      {itemlevel.length > 4 && (
+        <FormHelperText>
+          <span className="text-danger">
+            <CancelIcon className="mr-1" fontSize="small"></CancelIcon>
+            <small>{t('ilvl-toolong', { ns: 'login' })}</small>
+          </span>
+        </FormHelperText>
+      )}
+
       <div className="mt-15">
-        <ClassesSelector onValueChange={(e) => setLAClass(e.value) }/>
+        <ClassesSelector onValueChange={(e) => setLAClass(e.value)} />
       </div>
 
       <div className="mt-15">
         <FormControl varian="outlined" size="small" className="form-control">
-          <InputLabel>{t('passwordinput', {ns:'login'})}</InputLabel>
+          <InputLabel>{t('passwordinput', { ns: 'login' })}</InputLabel>
           <OutlinedInput
             id="password"
-            label={t('passwordinput', {ns:'login'})}
+            label={t('passwordinput', { ns: 'login' })}
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => {
@@ -149,7 +164,7 @@ const SignUp = () => {
             <FormHelperText style={{ marginLeft: "0px" }}>
               <span className="text-danger">
                 <CancelIcon className="mr-1" fontSize="small"></CancelIcon>
-                <small>{t('passwordtooshort', {ns:'login'})}</small>
+                <small>{t('passwordtooshort', { ns: 'login' })}</small>
               </span>
             </FormHelperText>
           )}
@@ -160,7 +175,7 @@ const SignUp = () => {
           type={showPassword ? "text" : "password"}
           id="confirm-password"
           size="small"
-          label={t('confirmpassword', {ns:'login'})}
+          label={t('confirmpassword', { ns: 'login' })}
           variant="outlined"
           className="form-control"
           value={confirmPassword}
@@ -188,12 +203,12 @@ const SignUp = () => {
                   className="mr-1"
                   fontSize="small"
                 ></CheckCircleIcon>
-                <small>{t('matchingpassword', {ns:'login'})}</small>
+                <small>{t('matchingpassword', { ns: 'login' })}</small>
               </span>
             ) : (
               <span className="text-danger">
                 <CancelIcon className="mr-1" fontSize="small"></CancelIcon>
-                <small>{t('non-matchingpassword', {ns:'login'})}</small>
+                <small>{t('non-matchingpassword', { ns: 'login' })}</small>
               </span>
             )}
           </FormHelperText>

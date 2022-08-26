@@ -1,5 +1,5 @@
-export const register = async ({ username, password, laclass } = {}) => {
-  const user = { username, password, laclass };
+export const register = async ({ username, password, laclass, itemlevel } = {}) => {
+  const user = { username, password, laclass, itemlevel };
 
   try {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
@@ -56,7 +56,7 @@ export const getLoggedInUser = async () => {
         method: "GET",
         credentials: "include",
       });
-  
+
       return await res.json();
     } catch (e) {
       throw new Error("Please login to continue");

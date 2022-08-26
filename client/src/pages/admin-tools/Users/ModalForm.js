@@ -47,6 +47,7 @@ const ModalForm = ({ hideModal, handleSubmit }) => {
             <ModalBody>
                 <Form.Group >
                     <Form.Control
+                        autoFocus 
                         disabled={isLoading}
                         placeholder={t('users.username', { ns: 'admin-tools' })}
                         type="text"

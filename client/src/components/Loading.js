@@ -1,9 +1,7 @@
-import { useTranslation } from 'react-i18next';
+import CircularProgress from '@mui/material/CircularProgress';
 
-const Loading = () => {
-    const {t} = useTranslation(['common']);
-
-    return (<>{t('loading')}...</>);
+const Loading = ({size}) => {   
+    return (<><CircularProgress size={size}/></>);
 }
 
 export default Loading;

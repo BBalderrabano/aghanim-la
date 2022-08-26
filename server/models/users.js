@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema(
     },
     itemlevel: {
       type: Number,
-      required: true,
     },
     laclass: {
       type: mongoose.Schema.Types.ObjectId,
@@ -32,6 +31,11 @@ const userSchema = new mongoose.Schema(
     roles: {
       type: [Number],
       default: [2001]
+    },
+    alters: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Alter",
+      autopopulate: true
     },
     salt: String,
   },

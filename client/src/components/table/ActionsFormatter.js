@@ -9,8 +9,6 @@ import {
 
 import EditIcon from '@mui/icons-material/Edit';
 
-import AccessibleIcon from '@mui/icons-material/Accessible';
-
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import CancelIcon from '@mui/icons-material/Cancel';

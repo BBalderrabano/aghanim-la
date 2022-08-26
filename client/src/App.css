@@ -40,6 +40,27 @@ html, body, #root, #root>div {
   padding-top: 56px;
 }
 
+.table-title {
+  padding-bottom: 15px;
+  background: #435d7d;
+  color: #fff;
+  padding: 16px 30px;
+  min-width: 100%;
+  border-radius: 3px 3px 0 0;
+}
+
+.table-title .btn span {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.table-wrapper {
+  overflow: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

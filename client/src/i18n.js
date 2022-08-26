@@ -17,7 +17,8 @@ i18n.use(Backend)
             "common",
             "login",
             "sidenavbar",
-            "errormessages"
+            "errormessages",
+            "profile"
         ],
         interpolation:{
             escapeValue:false,

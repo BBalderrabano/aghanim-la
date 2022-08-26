@@ -13,6 +13,7 @@ const {
   deleteUser,
   aproveUser,
   updateUser,
+  getUserById,
 } = require("../controllers/usersController");
 
 // Middlewares
@@ -30,7 +31,7 @@ router.post("/register", userRegisterValidator, register);
 router.post("/login", login);
 router.get("/logout", logout);
 
-router.get("/user", verifyToken, userById, getLoggedInUser);
+router.get("/user/:id?", verifyToken, userById, getUserById, getLoggedInUser);
 
 router.get("/api/users/all", verifyToken, userById, getAllUsers);
 router.get("/api/users/pending", verifyToken, userById, getPendingUsers);

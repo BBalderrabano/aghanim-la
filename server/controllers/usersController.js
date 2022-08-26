@@ -21,6 +21,7 @@ exports.register = async (req, res) => {
   if (usernameExists) {
     usernameExists.setPassword(req.body.password);
     usernameExists.laclass = req.body.laclass;
+    usernameExists.itemlevel = req.body.itemlevel;
 
     usernameExists.save().catch((error) => {
       res.send(400, "Bad Request");
@@ -29,17 +30,19 @@ exports.register = async (req, res) => {
     const user = new User(req.body);
     user.setPassword(req.body.password);
 
-    user.save().catch((error) => {
-      res.send(400, "Bad Request");
+    user.save().then(result => {
+      res.status(201).json({
+        message: usernamePreaproved
+          ? "Username already preaproved!"
+          : "Signup succesful, awaiting aproval!",
+        preaproved: usernamePreaproved ? true : false,
+      });
+    }).catch((error) => {
+      res.status(400).send({
+        error: "There was an error registering the user",
+      });
     });
   }
-
-  res.status(201).json({
-    message: usernamePreaproved
-      ? "Username already preaproved!"
-      : "Signup succesful, awaiting aproval!",
-    preaproved: usernamePreaproved ? true : false,
-  });
 };
 
 exports.login = (req, res) => {
@@ -75,10 +78,12 @@ exports.login = (req, res) => {
     res.cookie("jwt", token, { httpOnly: true });
 
     const { username } = user;
+
     return res.json({
       message: "Login succesfull",
       roles: user.roles,
       laclass: user.laclass,
+      _id: user._id,
       username,
     });
   });
@@ -87,19 +92,22 @@ exports.login = (req, res) => {
 exports.logout = (req, res) => {
   res.clearCookie("jwt");
 
-  return res.json({
+  return res.end(JSON.stringify({
     message: "Logout Succesfull!",
-  });
+  }));
 };
 
 exports.getLoggedInUser = (req, res) => {
-  const { username } = req.user;
+  if(!req.query.id && !req.params.id){
+    const { username, _id } = req.user;
 
-  return res.status(200).json({
-    message: "User is still logged in",
-    roles: req.user.roles,
-    username,
-  });
+    return res.status(200).json({
+      message: "User is still logged in",
+      roles: req.user.roles,
+      username,
+      _id,
+    });
+  }
 };
 
 exports.getAllUsers = async (req, res) => {
@@ -110,6 +118,17 @@ exports.getAllUsers = async (req, res) => {
 
   return res.status(200).json(users);
 };
+
+exports.getUserById = async (req, res, next) => {
+  if(req.query.id || req.params.id){
+    const user = await User.findById(req.query.id ? req.query.id : req.params.id).select({ salt: 0, hashedPassword: 0, updatedAt: 0, createdAt: 0 });
+
+    return res.status(200).json(user);
+  }else{
+    next();
+    return;
+  }
+}
 
 exports.getPendingUsers = async (req, res) => {
   const users = await User.find(
@@ -158,21 +177,21 @@ exports.preaproveUser = async (req, res) => {
   });
 
   if (usernameExists) {
-    return res.status(403).json({
+    res.status(403).json({
       error: "Username already exists",
     });
+  }else{
+    const user = new User(req.body);
+
+    user.save().then(result => {
+      res.status(201).json({
+        message: "Username preaproved!",
+        _id: user._id,
+      });
+    }).catch((error) => {
+      res.status(400).send({ error: "There was an error saving the user" });
+    });
   }
-
-  const user = new User(req.body);
-
-  user.save().catch((error) => {
-    return res.status(400).json({ error: "Error saving the user" });
-  });
-
-  res.status(201).json({
-    message: "Username preaproved!",
-    _id: user._id,
-  });
 };
 
 exports.updateUser = async (req, res) => {
@@ -180,7 +199,8 @@ exports.updateUser = async (req, res) => {
     roles: req.body.roles,
     enabled: req.body.enabled,
     laclass: req.body.laclass,
-    username: req.body.username
+    username: req.body.username,
+    itemlevel: req.body.itemlevel
   };
 
   User.findByIdAndUpdate(req.params.id, updatedUser, function (err, result) {
@@ -196,8 +216,9 @@ exports.updateUser = async (req, res) => {
           laclass: result.laclass,
           roles: result.roles,
           username: result.username,
+          itemlevel: result.itemlevel
         },
-        message: "Succesfully updated the user",
+        message: "Succesfully updated the user"
       });
     }
   });

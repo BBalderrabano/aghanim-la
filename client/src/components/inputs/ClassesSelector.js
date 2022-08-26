@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { getEnabledClasses } from "../api/classes";
+import { getEnabledClasses } from "../../api/classes";
 import Select from "react-select";
 
 const ClassesSelector = ({ onValueChange }) => {

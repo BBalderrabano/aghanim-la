@@ -18,7 +18,7 @@ const PersistLogin = () => {
     const unsubscribe = async () => {
       try {
         await getLoggedInUser()
-          .then((res) => {
+          .then((res) => {           
             if (res.error) {
               console.error(res.error);
             } else {
@@ -27,6 +27,7 @@ const PersistLogin = () => {
                   ...prev,
                   roles: res.roles,
                   user: res.username,
+                  _id: res._id
                 };
               });
             }

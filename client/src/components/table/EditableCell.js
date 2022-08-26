@@ -5,10 +5,11 @@ import PropTypes from "prop-types";
 
 import Switch from "react-bootstrap/Switch";
 import Select from 'react-select';
+import NumericInput from '../NumericInput';
 
 export const EditableCell = memo(({
     value: initialValue,
-    column: { displayDataType, editDataType, selectData, id: columnName, isEditable=true, format },
+    column: { displayDataType, editDataType, selectData, id: columnName, isEditable = true, format },
     editingRow,
     updateMyData,
     row
@@ -24,7 +25,7 @@ export const EditableCell = memo(({
     }
 
     const onBlur = () => {
-        if(value !== undefined && value !== null)
+        if (value !== undefined && value !== null)
             updateMyData(_id, columnName, value);
         else
             setValue(initialValue);
@@ -35,13 +36,19 @@ export const EditableCell = memo(({
     }
 
     useEffect(() => {
-        setValue(Array.isArray(initialValue) ? initialValue.sort() : initialValue );
+        setValue(Array.isArray(initialValue) ? initialValue.sort() : initialValue);
     }, [initialValue]);
 
     const checkForSymbolsOrNumbers = (e) => {
-        if (/[0-9]/.test(e.key) || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(e.key)) {  // eslint-disable-line
-            e.preventDefault();
+        if (!isSpecialKey(e.keyCode)) {
+            if (/[0-9]/.test(e.key) || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(e.key)) {  // eslint-disable-line
+                e.preventDefault();
+            }
         }
+    }
+
+    const isSpecialKey = (keyCode) => {
+        return keyCode == 8 || keyCode == 46 || keyCode == 37 || keyCode == 39;
     }
 
     let returnObj = null;
@@ -49,6 +56,15 @@ export const EditableCell = memo(({
     if (_id === editingRow && isEditable) {
         //IsEditing
         switch (editDataType) {
+            case 'number':
+                returnObj = <NumericInput
+                    disabled={isLoading}
+                    className="editable-field"
+                    placeholder={initialValue}
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur} />;
+                break;
             case 'switch':
                 returnObj =
                     <Switch
@@ -71,14 +87,14 @@ export const EditableCell = memo(({
                 };
 
                 const isEqual = require("react-fast-compare");
-                
+
                 returnObj =
                     <Select
                         isDisabled={isLoading}
                         placeholder={selectData.placeholder}
                         options={selectData.options}
                         defaultValue={
-                            selectData.options.filter(option => 
+                            selectData.options.filter(option =>
                                 isEqual(Array.isArray(option.value) && !isNaN(option.value) ? option.value.sort() : option.value, value))
                         }
                         menuPlacement="auto"
@@ -90,9 +106,10 @@ export const EditableCell = memo(({
                 returnObj =
                     <textarea
                         disabled={isLoading}
+                        placeholder={initialValue}
                         className="editable-field"
                         value={value}
-                        onKeyDown={ (e) => checkForSymbolsOrNumbers(e) }
+                        onKeyDown={(e) => checkForSymbolsOrNumbers(e)}
                         onChange={onChange}
                         onBlur={onBlur} />;
                 break;

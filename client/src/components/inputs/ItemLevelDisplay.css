@@ -1,0 +1,36 @@
+.display-input-container{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+}
+
+.display-input{
+  text-decoration: underline;
+  width: 70px;
+  border: none;
+  color:rgb(25, 118, 210);
+  cursor: pointer;
+}
+
+.display-input:focus{
+  outline: none;
+}
+
+.display-input:disabled{
+  background-color: transparent;
+}
+
+.is-editing{
+  cursor: initial;
+}
+
+.save-button{
+  padding: 0!important;
+  color:rgb(25, 118, 210)!important;
+  background-color: transparent!important;
+}
+
+.is-disabled{
+  color: lightgray !important;
+}

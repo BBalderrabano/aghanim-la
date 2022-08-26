@@ -40,7 +40,7 @@ const Login = () => {
       const res = await login({ username: laNick, password });
       if (res.error) toast.error(res.error);
       else {
-        setAuth({ user: res.username, roles: res.roles });
+        setAuth({ user: res.username, roles: res.roles, _id: res._id });
 
         navigation(from, { replace: true });
       }

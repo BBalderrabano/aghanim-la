@@ -5,6 +5,7 @@ exports.userRegisterValidator = (req, res, next) => {
     req.check("password", "Password is required").notEmpty();
     req.check("laclass", "Lost Ark class is required").notEmpty();
     req.check("itemlevel", "Item level is required").notEmpty();
+    req.check("itemlevel").isLength({max: 4}).withMessage("Item level must be at most a 4 digit number");
     req.check("password").isLength({min: 6}).withMessage("Password is too short");
 
     const errors = req.validationErrors();
@@ -37,7 +38,7 @@ exports.userPreaproveValidator = (req, res, next) => {
 exports.isAdminRoleValidator = (req,res,next) => {
     
     if(!req.user.roles.includes(7002)){
-        return res.status(404).json({
+        return res.status(403).json({
             error: "Unnauthorized action"
         });
     }

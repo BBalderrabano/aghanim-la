@@ -1,0 +1,17 @@
+.profile-fieldset {
+    border: 1px solid #000;
+    margin: 15px;
+    display: flex;
+    flex: 1;
+}
+
+.profile-legend {
+    text-align: left;
+    float: none;
+    padding: 0.5rem !important;
+}
+
+.profile-container{
+    text-align: left;
+    width: 100%;
+}

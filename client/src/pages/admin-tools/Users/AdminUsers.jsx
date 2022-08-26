@@ -146,6 +146,7 @@ const AdminUsers = () => {
       laclass: data.laclass,
       username: data.username,
       enabled: data.enabled,
+      itemlevel: data.itemlevel,
       _id: data._id,
     };
 
@@ -229,6 +230,12 @@ const AdminUsers = () => {
         label: t("users.username", { ns: "admin-tools" }),
         accessor: "username",
         isEditable: false,
+      },
+      {
+        label: t("ilvl"),
+        accessor: "itemlevel",
+        isEditable: true,
+        editDataType: "number"
       },
       {
         label: t("laclasses.classname", { ns: "admin-tools" }),
